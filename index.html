@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Work & Coffee</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
+    <link href="css/custom.css" rel="stylesheet">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+<style>
+svg {
+  width: 1024px;
+  height: 2048px;
+  left: 0;
+}
+
+/*
+body{
+  background-image: url("Moscow.png");
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  background-attachment: scroll;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 1024px;}
+*/
+body{
+  background-image: url("Moscow.png");
+  background-repeat: no-repeat;
+  background-position: center top; 
+  background-attachment: scroll;
+  position: absolute;
+  left: 50%;
+  width: 512px;
+  height: 2000px;  
+}
+subbody{
+  position: absolute;
+  left: -512px;
+  width: 1024px;
+  height: 2000px; 
+}
+
+
+</style>
+
+  <body>
+  <subbody>
+
+<h1>Work & Coffee</h1>
+
+
+<h6 class="text-muted">Краткий путеводитель по кофейням Москвы</h6>
+
+<div class="legend">
+<img src="legend.svg" onerror="this.onerror=null; this.src='image.png'">
+</div>
+
+
+
+
+
+<!--
+<object data="Moscow.svg" type="image/svg+xml"></object>
+<img src="Moscow.png" class="center-bloc">
+
+khtml-opacity:0; fill-opacity
+-->
+<svg>
+  <rect width="100%" height="100%" style="opacity:0"></rect>
+</svg>
+
+<div class="info">
+<table style="width: 80px"><tr>
+<td>
+<a href="https://twitter.com/share"><img height="25px" src="twitter.svg" onerror="this.onerror=null; this.src='image.png'"></a>
+</td><td>
+<a href="http://www.facebook.com/share.php?u=http://ya.ru"><img height="25px" src="fb.svg" onerror="this.onerror=null; this.src='image.png'"></a></td>
+</tr></table>
+</div>
+
+<div class="credits">
+Вся представленная информация является неполной и субьективной. Комментарии принимаются по адресу
+<a href="mailto: feedback.ccffee@gmail.com">feedback.ccffee@gmail.com</a>
+</div>
+
+<script>
+
+/*
+$("html").click(function() {
+  $("g").empty();
+});
+*/
+//$("#g").empty();
+//  document.getElementById("h1").style.color="red";
+//}
+//$("html").click(function(){
+//    $("#g").empty();
+//});
+
+
+//This example removes all <p> elements with class="test" and class="demo": 
+//$("p").remove(".test, .demo");
+
+d3.select("rect")
+.on("click", function(){
+d3.selectAll("g").remove();
+});
+//var data_x = [100, 200];
+//var data_y = [100, 200];
+
+var data;
+/*=[
+{"Desc":"Это какая-то хуета","X":100,"Y":200,"Title":"Старбакс обычный","Work":"1"},
+{"Desc":"Это какая-то хуета","X":300,"Y":150,"Title":"Старбакс обычный","Work":"3"}];
+*/
+//var json = {"Node": "json"};
+d3.json("Node.json", function(data) {
+ // if (error) return console.warn(error);
+ // data = json;
+  visualization(data);
+
+});
+
+d3.json("connections.json", function(data) {
+  animation(data);
+});
+
+
+var visualization = function (data){
+
+var filter = d3.select("svg").append("filter")
+    .attr("id", "drop-shadow")
+    .attr("x","-20%")
+    .attr("y","-20%")
+    .attr("height", "150%")
+    .attr("width", "150%");
+  
+filter.append("feComponentTransfer")
+    .append("feFuncA")
+    .attr("type", "linear")
+    .attr("slope", 0.1)
+    .attr("result", "opacity");
+
+filter.append("feGaussianBlur")
+    .attr("in", "SourceAlpha")
+    .attr("stdDeviation", 2)
+    .attr("result", "blur");
+
+filter.append("feOffset")
+    .attr("in", "blur")
+    .attr("dx", 2)
+    .attr("dy", 2)
+    .attr("result", "offsetBlur");
+
+
+var feMerge = filter.append("feMerge");
+
+feMerge.append("feMergeNode")
+    .attr("in", "offsetBlur")
+feMerge.append("feMergeNode")
+    .attr("in", "SourceGraphic");
+
+
+//var circles = d3.svg.circle()
+
+
+//.on("click", function(){d3.selectAll("g").remove();});
+
+var circles = d3.select("svg")
+.selectAll("circle")
+.data(data)
+.enter().append("circle")
+.attr("stroke-width",2)
+.attr("fill",function(d){
+  var returncolor;
+  if (d.Coffee===0){returncolor="#999999";}////BC1571
+  else if (d.Coffee===1){returncolor="#A67C52";}////DE8AB8
+  else if (d.Coffee===2){returncolor="#805A38";}////999999
+  else if (d.Coffee===3){returncolor="#603813";}////80CFC0
+  else {returncolor="#351503";}////009E80
+  return returncolor;
+})
+.attr("stroke",function(d){
+  var returncolor;
+  if (d.Coffee===0){returncolor="#7F7F7F";}////BC1571
+  else if (d.Coffee===1){returncolor="#8C6746";}////DE8AB8
+  else if (d.Coffee===2){returncolor="#66472D";}////999999
+  else if (d.Coffee===3){returncolor="#44260E";}////80CFC0
+  else {returncolor="#190902";}////009E80
+  return returncolor;
+})
+//.style("filter", "url(#drop-shadow)")
+.attr("r", 13)
+.attr("cy",function(d){return d.Y})
+.attr("cx",function(d){return d.X})
+.on("mouseover", pulse(15,150))
+.on("mouseout", pulse(13,150))
+//.on("click", function(){information(100,100)});
+.on("click", function(d){information(d.X,d.Y,d.Title,d.Location,d.Desc,d.Work,d.Coffee)});
+  //function(d){return d[1].X},function(d){return d[1].Y})});
+
+//  infoshow(function(d){return d.X},function(d){return d.Y}));
+
+
+//  function(){});
+  //dispatch.start( function(d){return d.X},function(d){return d.Y} ));
+  //information(function(d){return d.X},function(d){return d.Y}));
+
+
+
+var work_s = d3.scale.linear().domain([0, 4]).range([0, 2 * Math.PI]);
+var arc_outer_radius = 21;
+var arc_inner_radius = 19;
+
+var arc_back = d3.svg.arc()
+.innerRadius(arc_inner_radius-0)
+.outerRadius(arc_outer_radius+0)
+.startAngle(0)
+.endAngle(2 * Math.PI);
+
+var arcs_back = d3.select("svg").selectAll("arc_back")
+.data(data)
+.enter().append("path")
+.attr("d",arc_back)
+.attr("fill", "#C0C0C0")//3E3E3E
+.attr("transform", function(d) { return "translate(" + d.X + "," + d.Y + ")"; });
+
+
+
+var arc = d3.svg.arc()
+.innerRadius(arc_inner_radius)
+.outerRadius(arc_outer_radius)
+.startAngle(0)
+.endAngle(function(d) {return work_s(d.Work) });
+
+//.endAngle(function(d){return cScale(d[1]);} );
+
+//var myScale = d3.scale.linear().domain([0, 100]).range([0, 2 * Math.PI]);
+
+var arcs = d3.select("svg").selectAll("arcs")
+.data(data)
+.enter().append("path")
+.attr("d",arc)
+.attr("fill", "#603813")//CFFF00
+.attr("transform", function(d) { return "translate(" + d.X + "," + d.Y + ")"; });
+
+
+
+function pulse(finalRadius,duration) {
+  return function() {
+    d3.select(this).transition().attr("r",finalRadius).duration(duration);//.ease("elastic");
+/*    .attrTween("r", function(r) 
+    {
+      var i = d3.interpolate(13, finalRadius);
+      return function(t) { r = i(t); return r; };
+    });*/
+  };
+
+}
+
+
+
+
+/*
+var dispatch = d3.dispatch("infoshow", "infohide");
+dispatch.on("infoshow", information);
+dispatch.on("infohide", listener);
+*/
+
+function information(X,Y,Title,Location,Desc,Work,Coffee){
+
+//////////p.legibility {
+//////////  text-rendering: optimizeLegibility;}
+
+
+d3.selectAll("g").remove();
+
+var group=d3.select("svg").append("g");
+
+var line = group.append("line")
+  .attr("stroke-width",2)
+  .attr("stroke","#603813")
+  .attr("x1",X+21)
+  .attr("y1",Y)
+  .attr("x2",X+21)
+  .attr("y2",Y);
+
+line
+  .transition()
+  .attr("x2",X+50+170)
+  .duration(100);
+
+
+var rectange=group.append("rect")
+.attr("fill","#603813")
+.attr("stroke-width",2)
+.attr("stroke","#351503")
+.attr("x",X+50)
+.attr("y",Y)
+.attr("rx",3)
+.attr("ry",3)
+.attr("width",190)
+.attr("height",0);
+
+rectange
+  .transition()
+  .attr("height",300)
+  .attr("y",Y-21)
+  .delay(100)
+  .duration(500);
+
+var title=group.append("text")
+//.html(Title)
+.text(Title)
+.attr("width",160)
+.attr("height",40)
+.attr("style","letter-spacing:1;")
+//.attr("text-rendering","optimizeLegibility")
+///.attr("webkit-appearance","none")
+.attr("x",X+60)
+.attr("y",Y)
+.attr("fill","white")
+////.attr("font-family","Amaranth")
+.attr("font-weight",100)
+.attr("font-size","1.2em")
+.attr("opacity",0);
+
+var location=group.append("text")
+.text(Location)
+.attr("x",X+60)
+.attr("y",Y+12)
+.attr("fill","#A67C52")
+.attr("opacity",0)
+//.attr("fill","#A67C52")
+.attr("font-weight",900)
+.attr("font-size","0.8em");
+
+
+var cup=group.append("svg:image")
+.attr("x",X+58)
+.attr("y",Y+26)
+.attr("width",18)//1.846
+.attr("height",10)
+.attr("fill","white")
+.attr("opacity",0)
+.attr("xlink:href","cup.svg");
+
+
+var cupText=group.append("text")
+.text(Coffee+" / 4")
+//.text("Капучино")
+.attr("x",X+80)
+.attr("y",Y+35)
+.attr("fill","white")
+.attr("opacity",0)
+.attr("font-weight",200)
+.attr("font-size","0.8em");
+
+
+var note=group.append("svg:image")
+.attr("x",X+118)
+.attr("y",Y+26)
+.attr("width",18)//1.846
+.attr("height",10)
+.attr("fill","white")
+.attr("opacity",0)
+.attr("xlink:href","note.svg");
+
+
+var noteText=group.append("text")
+.text(Work+" / 4")
+//.text("Капучино")
+.attr("x",X+140)
+.attr("y",Y+35)
+.attr("fill","white")
+.attr("opacity",0)
+//.attr("font-weight",900)
+.attr("font-size","0.8em");
+
+var description=group.append("foreignObject")
+.attr("width",150)
+.attr("height","100%")
+.attr("x",X+60)
+.attr("y",Y+50)
+.attr("opacity",0);
+
+
+
+title.transition().attr("opacity",1).delay(300);
+location.transition().attr("opacity",1).delay(300);
+cup.transition().attr("opacity",1).delay(300);
+cupText.transition().attr("opacity",1).delay(300);
+note.transition().attr("opacity",1).delay(300);
+noteText.transition().attr("opacity",1).delay(300);
+description.transition().attr("opacity",1).delay(300);
+
+
+description
+.append("xhtml:p")
+.html(Desc)
+//.attr("font-family","Amaranth")
+.attr("font-weight",100)
+.attr("font-size","0.8em");
+
+//function(Desc)
+
+//var tmp=group.attr("height");
+//attr("height");
+//foreignObject.attr("height");
+//d3.select("foreignObject").node().getBoundingClientRect().height;
+//d3.select("foreignObject").style("height")
+
+
+//d3.select("rect").transition().attr("height",tmp).duration(300);
+//d3.select("rect")
+//.attr("height",tmp.height);
+//$("div").height()
+
+
+}
+}
+
+
+function animation(data){
+
+
+/*
+  var tmpX=function(d){return d.x2-d.x1};
+  var tmpY=10;//function(d){return d.y2-d.y1};
+  var L=Math.sqrt(tmpX*tmpX+tmpY*tmpY);
+  var dX=23*tmpX/L;
+  var dY=23*tmpY/L;
+*/
+//d3.select("h1").text(tmpX);
+
+
+var lines = d3.select("svg")
+  .selectAll("line")
+  .data(data)
+  .enter().append("line")
+  .attr("stroke-width",0.5)
+  .style("stroke-dasharray",("6,3"))
+  .attr("stroke","#603813")
+  .attr("opacity",1)
+  .attr("x1",function(d){return d.x1+23*(d.x2-d.x1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
+  .attr("y1",function(d){return d.y1+23*(d.y2-d.y1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})//data.y1-dY)
+  .attr("x2",function(d){return d.x1+23*(d.x2-d.x1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
+  .attr("y2",function(d){return d.y1+23*(d.y2-d.y1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
+  .transition()
+  .attr("x2",function(d){return d.x2-23*(d.x2-d.x1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
+  .attr("y2",function(d){return d.y2-23*(d.y2-d.y1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
+  .delay(function(d,i){return i*200}).duration(400);
+
+
+/*
+var x1=290;
+var y1=163;
+var x2=375;
+var y2=565;
+*/
+
+/*
+  d3.select("svg")
+  .append("line")
+  .attr("stroke-width",1)
+  .attr("stroke","#aaaaaa")
+  .attr("x1",x1)
+  .attr("y1",y1)
+  .attr("x2",x2)
+  .attr("y2",y2);
+*/
+/*
+  var line = d3.select("svg")
+  .append("line")
+  .attr("stroke-width",1)
+  .attr("stroke","#C0C0C0")
+  .attr("x1",x1)
+  .attr("y1",y1)
+  .attr("x2",x1)
+  .attr("y2",y1);  
+*/
+}
+
+
+/*
+var information = function(){
+    d3.select(this)
+    .transition
+ //   .delay(0)
+    .attrTween("r", function()
+    {
+      var i = d3.interpolate(20, 25);
+      return function(t) 
+      { 
+        d.outerRadius = i(t); 
+        return circles(d); 
+      };
+    }
+}
+
+/*
+
+  d3.select(this)
+  .enter().append("path")
+  .attr("r", 25) 
+.attr("d",arc)
+.attr("fill", "#CFFF00")//CFFF00
+  .attr("transform", function(d) { return "translate(" + dX + "," + dY + ")"; });}
+
+/*
+function arcTween(outerRadius, delay) 
+{
+  return function() 
+  {
+    d3.select(this).
+    transition().
+    delay(delay).
+    attrTween("d", function(d) 
+    {
+      var i = d3.interpolate(d.outerRadius, outerRadius);
+      return function(t) 
+      { 
+        d.outerRadius = i(t); 
+        return arc(d); 
+      };
+    });
+  };
+}
+
+
+
+
+/*
+  .transition()
+  .attr("r", 25) 
+
+.attr("stroke-width",2)
+.attr("fill","#999999")
+.attr("stroke","#7F7F7F")
+.attr("cy",dY})
+.attr("cx",dX});
+}
+
+
+
+
+
+
+
+/*  .selectAll("orbit")
+  .enter().append("orbit")
+  .data(data)
+  .enter().append("circle")
+  .attr("stroke-width",1)
+  .attr("stroke","#057F9F")
+  .attr("r", 25)
+  .attr("cy",dY})
+  .attr("cx",dX});*/
+
+
+
+
+/*///// CIRCLES
+var circles = d3.select("svg").selectAll("circle")
+.data(data)
+.enter().append("circle")
+.attr("fill", "#603813")
+.attr("r", 25)
+.attr("cy",function(d){return d.Y})
+.attr("cx",function(d){return d.X});//function(d){return d})
+*///////
+
+/*
+var arc = d3.svg.arc()
+.innerRadius(5)
+.outerRadius(7)
+.startAngle(0)
+.endAngle(4);
+/*
+var vis = d3.select("svg");
+*//*
+circles.append("path")
+.attr("d",arc)
+.attr("fill", "#CFFF00");
+
+/*
+
+d3.select("svg").selectAll("circle")
+.data(data)
+.enter().append("path")
+.attr("fill", "#CFFF00")
+.attr("innerRadius", 20)
+.attr("outerRadius", 22)
+.attr("startAngle", 0)
+.attr("endAngle", 4)
+.attr("width", 50)
+.attr("hight", 50)
+.attr("d", arc);
+
+
+/*
+var svg = d3.select("body").append("svg")
+    .attr("width", diameter)
+    .attr("height", diameter)
+    .attr("class", "bubble");
+
+
+d3.json("Node.json", function(error, root) {
+
+
+  var node = svg.selectAll(".node")
+      .data(bubble.nodes(classes(root))
+      .filter(function(d) { return !d.children; }))
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+
+d3.select("body")
+ .data(data)
+ .enter().append("div")
+    .style("width", function(d) { return d * 10 + "px"; })
+    .text(function(d) { return d; });
+
+
+/*
+d3.select(".chart")
+  .selectAll("div")
+    .data(data)
+  .enter().append("div")
+    .style("width", function(d) { return d * 10 + "px"; })
+    .text(function(d) { return d; });
+
+
+/*
+var theData = [ 1, 2, 3 ]
+
+var p = d3.select("body").selectAll("p")
+  .data(theData)
+  .enter()
+  .append("p")
+  .text("hello ");
+  */
+</script>
+
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+
+  </subbody></body>
+</html>
