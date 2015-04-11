@@ -239,7 +239,7 @@ var arcs_back = d3.select("svg").selectAll("arc_back")
 .data(data)
 .enter().append("path")
 .attr("d",arc_back)
-.attr("fill", "#C0C0C0")//3E3E3E
+.attr("fill", "#A0A0A0")//3E3E3E
 .attr("transform", function(d) { return "translate(" + d.X + "," + d.Y + ")"; });
 
 
@@ -286,6 +286,8 @@ dispatch.on("infohide", listener);
 
 function information(X,Y,Title,Location,Desc,Work,Coffee){
 
+var infoWidth=200;
+var infoHight=350;
 //////////p.legibility {
 //////////  text-rendering: optimizeLegibility;}
 
@@ -307,8 +309,7 @@ line
   .attr("x2",X+50+170)
   .duration(100);
 
-
-var rectange=group.append("rect")
+var rectangle=group.append("rect")
 .attr("fill","#603813")
 .attr("stroke-width",2)
 .attr("stroke","#351503")
@@ -316,12 +317,12 @@ var rectange=group.append("rect")
 .attr("y",Y)
 .attr("rx",3)
 .attr("ry",3)
-.attr("width",190)
+.attr("width",infoWidth)
 .attr("height",0);
 
-rectange
+rectangle
   .transition()
-  .attr("height",300)
+  .attr("height",infoHight)
   .attr("y",Y-21)
   .delay(100)
   .duration(500);
@@ -329,7 +330,7 @@ rectange
 var title=group.append("text")
 //.html(Title)
 .text(Title)
-.attr("width",160)
+.attr("width",infoWidth-20)
 .attr("height",40)
 .attr("style","letter-spacing:1;")
 //.attr("text-rendering","optimizeLegibility")
@@ -395,7 +396,7 @@ var noteText=group.append("text")
 .attr("font-size","0.8em");
 
 var description=group.append("foreignObject")
-.attr("width",150)
+.attr("width",infoWidth-20)
 .attr("height","100%")
 .attr("x",X+60)
 .attr("y",Y+50)
