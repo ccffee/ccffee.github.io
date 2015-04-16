@@ -237,7 +237,7 @@ var lines = d3.select("svg")
   .transition()
   .attr("x2",function(d){return d.x2+corrX-blankR*(d.x2-d.x1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
   .attr("y2",function(d){return d.y2+corrY-blankR*(d.y2-d.y1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
-  .delay(function(d,i){return i*300}).duration(500);
+  .delay(function(d,i){return 3000+i*300}).duration(500);
 
 }
 
