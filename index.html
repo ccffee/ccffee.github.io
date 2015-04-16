@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Work & Coffee</title>
 
     <!-- Bootstrap -->
@@ -12,6 +11,22 @@
     <link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
     <link href="css/custom.css" rel="stylesheet">
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+
+<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter29765355 = new Ya.Metrika({id:29765355, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/29765355" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61961486-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -29,17 +44,6 @@ svg {
   left: 0;
 }
 
-/*
-body{
-  background-image: url("Moscow.png");
-  background-repeat: no-repeat;
-  background-position: 0px 0px;
-  background-attachment: scroll;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  width: 1024px;}
-*/
 body{
   background-image: url("Moscow.jpg");
   background-color: #E7DCD1;
@@ -73,16 +77,6 @@ subbody{
 <img src="legend.svg" onerror="this.onerror=null; this.src='image.png'">
 </div>
 
-
-
-
-
-<!--
-<object data="Moscow.svg" type="image/svg+xml"></object>
-<img src="Moscow.png" class="center-bloc">
-
-khtml-opacity:0; fill-opacity
--->
 <svg>
   <rect width="100%" height="100%" style="opacity:0"></rect>
 </svg>
@@ -106,38 +100,14 @@ khtml-opacity:0; fill-opacity
 var corrY=-20;
 var corrX=80;
 
-/*
-$("html").click(function() {
-  $("g").empty();
-});
-*/
-//$("#g").empty();
-//  document.getElementById("h1").style.color="red";
-//}
-//$("html").click(function(){
-//    $("#g").empty();
-//});
-
-
-//This example removes all <p> elements with class="test" and class="demo": 
-//$("p").remove(".test, .demo");
 
 d3.select("rect")
 .on("click", function(){
 d3.selectAll("g").remove();
 });
-//var data_x = [100, 200];
-//var data_y = [100, 200];
 
 var data;
-/*=[
-{"Desc":"Это какая-то хуета","X":100,"Y":200,"Title":"Старбакс обычный","Work":"1"},
-{"Desc":"Это какая-то хуета","X":300,"Y":150,"Title":"Старбакс обычный","Work":"3"}];
-*/
-//var json = {"Node": "json"};
 d3.json("Node.json", function(data) {
- // if (error) return console.warn(error);
- // data = json;
   visualization(data);
   features(data);
 });
@@ -147,7 +117,6 @@ d3.json("connections.json", function(data) {
 });
 
 
-//var visualization = function (data){
 function visualization (data){
 
 var filter = d3.select("svg").append("filter")
@@ -183,19 +152,11 @@ feMerge.append("feMergeNode")
     .attr("in", "SourceGraphic");
 
 
-//var circles = d3.svg.circle()
-
-
-//.on("click", function(){d3.selectAll("g").remove();});
-
-
-
 var circles = d3.select("svg")
 .selectAll("circle")
 .data(data)
 .enter().append("circle")
 .attr("id",function(d,i) {return "cir"+i})
-//.style("fill", "star.svg")
 .attr("stroke-width",2)
 .attr("fill",function(d){
   var returncolor;
@@ -223,53 +184,6 @@ var circles = d3.select("svg")
 //.on("mouseout", pulse(13,150))
 //.on("click", function(d){information(d.X,d.Y,d.Title,d.Location,d.Desc,d.Work,d.Coffee)});
 
-
-
-
-
-//.style("fill","url(star.svg)")
-/*
-//d3.select("svg").selectAll("circle").data(data).enter()
-d3.select("svg").selectAll("circle")
-//.data(data).enter()
-
-.append("pattern").attr("id","image");//.attr("x",0).attr("y",0).attr("height",20).attr("width",20);
-
-d3.select("svg").selectAll("pattern")
-.append("svg:image")
-//.attr("fill", "star.svg");
-//.style("fill","white")
-.attr("xlink:href","star.svg")
-.attr("x",440+corrY-10)
-.attr("y",685+corrX-10)
-//.attr("x",function(d){return d.Y+corrY-10})
-//.attr("y",function(d){return d.X+corrX-10})
-.attr("width",20)//1.846
-.attr("height",20);
-//.attr("opacity",1);
-/*
-//.attr("fill","white")
-//.attr("opacity",1);
-.attr("xlink:href","star.svg");
-*/
-
-
-
-
-  //function(d){return d[1].X},function(d){return d[1].Y})});
-
-//  infoshow(function(d){return d.X},function(d){return d.Y}));
-
-
-//  function(){});
-  //dispatch.start( function(d){return d.X},function(d){return d.Y} ));
-  //information(function(d){return d.X},function(d){return d.Y}));
-
-
-
-
-
-
 var work_s = d3.scale.linear().domain([0, 4]).range([0, 2 * Math.PI]);
 var arc_outer_radius = 21;
 var arc_inner_radius = 19.5;
@@ -287,17 +201,12 @@ var arcs_back = d3.select("svg").selectAll("arc_back")
 .attr("fill", "#999999")//909090//3E3E3E
 .attr("transform", function(d) {var tmpX=d.X+corrX; var tmpY=d.Y+corrY; return "translate(" + tmpX + "," + tmpY + ")"; });
 
-
-
 var arc = d3.svg.arc()
 .innerRadius(arc_inner_radius)
 .outerRadius(arc_outer_radius)
 .startAngle(0)
 .endAngle(function(d) {return work_s(d.Work) });
 
-//.endAngle(function(d){return cScale(d[1]);} );
-
-//var myScale = d3.scale.linear().domain([0, 100]).range([0, 2 * Math.PI]);
 
 var arcs = d3.select("svg").selectAll("arcs")
 .data(data)
@@ -306,41 +215,12 @@ var arcs = d3.select("svg").selectAll("arcs")
 .attr("fill", "#351503")//603813//CFFF00
 .attr("transform", function(d) {var tmpX=d.X+corrX; var tmpY=d.Y+corrY; return "translate(" + tmpX + "," + tmpY + ")"; });
 
-
-
-
-
-
-/*
-var dispatch = d3.dispatch("infoshow", "infohide");
-dispatch.on("infoshow", information);
-dispatch.on("infohide", listener);
-*/
 }
 
 
 function animation(data){
 
 var blankR=21;
-/*
-var lineX1Corr=function(d){return d.x1+corrX};
-var lineY1Corr=function(d){return d.y1+corrY};
-var lineX2Corr=function(d){return d.x2+corrX};
-var lineY2Corr=function(d){return d.y2+corrY};
-
-var lineDeltaX=lineX2Corr-lineX1Corr;
-var lineDeltaY=lineY2Corr-lineY1Corr;
-var lineSqrt=Math.sqrt(lineDeltaX*lineDeltaX+lineDeltaY*lineDeltaY);
-*/
-/*
-  var tmpX=function(d){return d.x2-d.x1};
-  var tmpY=10;//function(d){return d.y2-d.y1};
-  var L=Math.sqrt(tmpX*tmpX+tmpY*tmpY);
-  var dX=23*tmpX/L;
-  var dY=23*tmpY/L;
-*/
-//d3.select("h1").text(tmpX);
-
 
 var lines = d3.select("svg")
   .selectAll("line")
@@ -350,16 +230,6 @@ var lines = d3.select("svg")
   .style("stroke-dasharray",("6,3"))
   .attr("stroke","#707070")
   .attr("opacity",1)
-/*  .attr("x1",lineX1Corr+blankR*lineDeltaX/lineSqrt)
-  .attr("y1",lineY1Corr+blankR*lineDeltaY/lineSqrt)
-  .attr("x2",lineX1Corr+blankR*lineDeltaX/lineSqrt)
-  .attr("y2",lineY1Corr+blankR*lineDeltaY/lineSqrt)
-//  .transition()
-//  .attr("x2",lineX2Corr-blankR*lineDeltaX/lineSqrt)
-//  .attr("y2",lineY2Corr-blankR*lineDeltaY/lineSqrt)
-  .delay(function(d,i){return i*200}).duration(400);
-*/
-
   .attr("x1",function(d){return d.x1+corrX+blankR*(d.x2-d.x1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
   .attr("y1",function(d){return d.y1+corrY+blankR*(d.y2-d.y1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})//data.y1-dY)
   .attr("x2",function(d){return d.x1+corrX+blankR*(d.x2-d.x1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
@@ -369,206 +239,13 @@ var lines = d3.select("svg")
   .attr("y2",function(d){return d.y2+corrY-blankR*(d.y2-d.y1)/Math.sqrt((d.x2-d.x1)*(d.x2-d.x1)+(d.y2-d.y1)*(d.y2-d.y1))})
   .delay(function(d,i){return i*300}).duration(500);
 
-
-/*
-var x1=290;
-var y1=163;
-var x2=375;
-var y2=565;
-*/
-
-/*
-  d3.select("svg")
-  .append("line")
-  .attr("stroke-width",1)
-  .attr("stroke","#aaaaaa")
-  .attr("x1",x1)
-  .attr("y1",y1)
-  .attr("x2",x2)
-  .attr("y2",y2);
-*/
-/*
-  var line = d3.select("svg")
-  .append("line")
-  .attr("stroke-width",1)
-  .attr("stroke","#C0C0C0")
-  .attr("x1",x1)
-  .attr("y1",y1)
-  .attr("x2",x1)
-  .attr("y2",y1);  
-*/
 }
-
-
-/*
-var information = function(){
-    d3.select(this)
-    .transition
- //   .delay(0)
-    .attrTween("r", function()
-    {
-      var i = d3.interpolate(20, 25);
-      return function(t) 
-      { 
-        d.outerRadius = i(t); 
-        return circles(d); 
-      };
-    }
-}
-
-/*
-
-  d3.select(this)
-  .enter().append("path")
-  .attr("r", 25) 
-.attr("d",arc)
-.attr("fill", "#CFFF00")//CFFF00
-  .attr("transform", function(d) { return "translate(" + dX + "," + dY + ")"; });}
-
-/*
-function arcTween(outerRadius, delay) 
-{
-  return function() 
-  {
-    d3.select(this).
-    transition().
-    delay(delay).
-    attrTween("d", function(d) 
-    {
-      var i = d3.interpolate(d.outerRadius, outerRadius);
-      return function(t) 
-      { 
-        d.outerRadius = i(t); 
-        return arc(d); 
-      };
-    });
-  };
-}
-
-
-
-
-/*
-  .transition()
-  .attr("r", 25) 
-
-.attr("stroke-width",2)
-.attr("fill","#999999")
-.attr("stroke","#7F7F7F")
-.attr("cy",dY})
-.attr("cx",dX});
-}
-
-
-
-
-
-
-
-/*  .selectAll("orbit")
-  .enter().append("orbit")
-  .data(data)
-  .enter().append("circle")
-  .attr("stroke-width",1)
-  .attr("stroke","#057F9F")
-  .attr("r", 25)
-  .attr("cy",dY})
-  .attr("cx",dX});*/
-
-
-
-
-/*///// CIRCLES
-var circles = d3.select("svg").selectAll("circle")
-.data(data)
-.enter().append("circle")
-.attr("fill", "#603813")
-.attr("r", 25)
-.attr("cy",function(d){return d.Y})
-.attr("cx",function(d){return d.X});//function(d){return d})
-*///////
-
-/*
-var arc = d3.svg.arc()
-.innerRadius(5)
-.outerRadius(7)
-.startAngle(0)
-.endAngle(4);
-/*
-var vis = d3.select("svg");
-*//*
-circles.append("path")
-.attr("d",arc)
-.attr("fill", "#CFFF00");
-
-/*
-
-d3.select("svg").selectAll("circle")
-.data(data)
-.enter().append("path")
-.attr("fill", "#CFFF00")
-.attr("innerRadius", 20)
-.attr("outerRadius", 22)
-.attr("startAngle", 0)
-.attr("endAngle", 4)
-.attr("width", 50)
-.attr("hight", 50)
-.attr("d", arc);
-
-
-/*
-var svg = d3.select("body").append("svg")
-    .attr("width", diameter)
-    .attr("height", diameter)
-    .attr("class", "bubble");
-
-
-d3.json("Node.json", function(error, root) {
-
-
-  var node = svg.selectAll(".node")
-      .data(bubble.nodes(classes(root))
-      .filter(function(d) { return !d.children; }))
-    .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-
-
-d3.select("body")
- .data(data)
- .enter().append("div")
-    .style("width", function(d) { return d * 10 + "px"; })
-    .text(function(d) { return d; });
-
-
-/*
-d3.select(".chart")
-  .selectAll("div")
-    .data(data)
-  .enter().append("div")
-    .style("width", function(d) { return d * 10 + "px"; })
-    .text(function(d) { return d; });
-
-
-/*
-var theData = [ 1, 2, 3 ]
-
-var p = d3.select("body").selectAll("p")
-  .data(theData)
-  .enter()
-  .append("p")
-  .text("hello ");
-  */
-
-
 
 
 function information(X,Y,Title,Location,Desc,Work,Coffee){
 
 var infoWidth=250;
 var infoHight=330;
-//////////p.legibility {
-//////////  text-rendering: optimizeLegibility;}
 
 
 d3.selectAll("g").remove();
@@ -607,17 +284,13 @@ rectangle
   .duration(500);
 
 var title=group.append("text")
-//.html(Title)
 .text(Title)
 .attr("width",infoWidth-20)
 .attr("height",40)
 .attr("style","letter-spacing:1;")
-//.attr("text-rendering","optimizeLegibility")
-///.attr("webkit-appearance","none")
 .attr("x",X+corrX+65)
 .attr("y",Y+corrY+5)
 .attr("fill","white")
-////.attr("font-family","Amaranth")
 .attr("font-weight",200)
 .attr("font-size","1.2em")
 .attr("opacity",0);
@@ -628,7 +301,6 @@ var location=group.append("text")
 .attr("y",Y+corrY+20)
 .attr("fill","#A67C52")
 .attr("opacity",0)
-//.attr("fill","#A67C52")
 .attr("font-weight",900)
 .attr("font-size","0.8em");
 
@@ -636,7 +308,7 @@ var location=group.append("text")
 var cup=group.append("svg:image")
 .attr("x",X+corrX+63)
 .attr("y",Y+corrY+31)
-.attr("width",18)//1.846
+.attr("width",18)
 .attr("height",10)
 .attr("fill","white")
 .attr("opacity",0)
@@ -645,7 +317,6 @@ var cup=group.append("svg:image")
 
 var cupText=group.append("text")
 .text(Coffee+" / 4")
-//.text("Капучино")
 .attr("x",X+corrX+85)
 .attr("y",Y+corrY+40)
 .attr("fill","white")
@@ -657,7 +328,7 @@ var cupText=group.append("text")
 var note=group.append("svg:image")
 .attr("x",X+corrX+128)
 .attr("y",Y+corrY+31)
-.attr("width",18)//1.846
+.attr("width",18)
 .attr("height",10)
 .attr("fill","white")
 .attr("opacity",0)
@@ -671,7 +342,6 @@ var noteText=group.append("text")
 .attr("y",Y+corrY+40)
 .attr("fill","white")
 .attr("opacity",0)
-//.attr("font-weight",900)
 .attr("font-size","0.8em");
 
 var description=group.append("foreignObject")
@@ -695,24 +365,8 @@ description.transition().attr("opacity",1).delay(300);
 description
 .append("xhtml:p")
 .html(Desc)
-//.attr("font-family","Amaranth")
 .attr("font-weight",100)
 .attr("font-size","0.8em");
-
-//function(Desc)
-
-//var tmp=group.attr("height");
-//attr("height");
-//foreignObject.attr("height");
-//d3.select("foreignObject").node().getBoundingClientRect().height;
-//d3.select("foreignObject").style("height")
-
-
-//d3.select("rect").transition().attr("height",tmp).duration(300);
-//d3.select("rect")
-//.attr("height",tmp.height);
-//$("div").height()
-
 
 }
 
@@ -725,82 +379,29 @@ function pulse(finalRadius,duration) {
 
 
 
-
-
 function features(data){
 
 
-/*
-var circles = d3.select("svg")
-.selectAll("circle")
-.data(data)
-.enter().append("circle")
-//.attr("id",function(d,i) {return "cir"+i})
-//.style("fill", "star.svg")
-.attr("stroke-width",2)
-
-*/
-
-d3.select("svg")//.data(data)
+d3.select("svg")
 .selectAll("image").data(data)
 .enter()
 .append("svg:image")
 
 .attr("xlink:href",function(d){return d.Feature})
-//  "star.svg")
-.attr("width",30)//1.846
+.attr("width",30)
 .attr("height",30)
 .attr("y",function(d){return d.Y+corrY-15})
 .attr("x",function(d){return d.X+corrX-15})
 
-//.attr("id",function(d,i) {return "cir"+i})
-//.style("fill", "star.svg")
-//.attr("stroke-width",2)
-
 
 .on("mouseover", function(d,i){d3.select("#cir"+i).transition().attr("r",15).duration(150)})
-//.on("mouseover", function(d,i){pulseFeatured(d,i,15,150)})
 .on("mouseout", function(d,i){d3.select("#cir"+i).transition().attr("r",13).duration(150)})
 .on("click", function(d){information(d.X,d.Y,d.Title,d.Location,d.Desc,d.Work,d.Coffee)});
-
-
-
-/*
-var starX=440-10+corrX;
-var starY=685-10+corrY;
-
-
-d3.select("svg").append("svg:image")
-//.attr("fill", "star.svg");
-//.style("fill","white")
-//.attr("xlink:href","star.svg")
-.attr("x",starX)
-.attr("y",starY)
-.attr("width",20)//1.846
-.attr("height",20)
-//.attr("fill","white")
-.attr("opacity",1)
-.attr("xlink:href","star.svg")
-//.on("mouseover", function(){d3.select("#cir9").transition().attr("r",15).duration(150);})
-//.on("mouseout", function(){d3.select("#cir9").transition().attr("r",13).duration(150);})
-.on("click", function(d){information(starX,starY,"test",Data.Location[9],"dDesc","dWork","dCoffee")});
-
-*/
-//.on("mouseover", function(){d3.select(svg).transition().attr("r",15).duration(150);})
-//.on("mouseout", pulse(13,150))
-
-
 
 }
 
 
-
-
 </script>
-
-
-
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
