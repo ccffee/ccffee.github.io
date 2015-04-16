@@ -2,7 +2,6 @@ h1 {
 	position: fixed;
 	top: 0em;
 	left: 3%;
-
 	font-family: 'Amaranth', sans-serif;
 	font-size: 3em;
 }
@@ -17,6 +16,7 @@ h6{
 	position: fixed;
 	top: 4.8em;
 	left: 3%;
+	color: #444444;
 }
 
 p{
@@ -30,7 +30,7 @@ p{
 	height: 42px;
 	top: 2em;
 	right: 3%;
-	opacity: 0.6;
+	opacity: 0.8;
 }
 
 
@@ -38,11 +38,13 @@ p{
 	position: fixed;
 	left: 3%;
 	bottom: 0.5%;	
-	opacity: 0.4;
+	opacity: 0.5;
 }
 
 .credits{
 	position: fixed;
+	text-align: right;
+	width: 80%;
 	right: 3%;
 	bottom: 0.5%;
 	font-size: 0.8em;

@@ -67,7 +67,7 @@ subbody{
 <h1>Work & Coffee</h1>
 
 
-<h6 class="text-muted">Краткий путеводитель по кофейням Москвы</h6>
+<h6>Краткий путеводитель по кофейням Москвы</h6>
 
 <div class="legend">
 <img src="legend.svg" onerror="this.onerror=null; this.src='image.png'">
@@ -88,7 +88,7 @@ khtml-opacity:0; fill-opacity
 </svg>
 
 <div class="info">
-<table style="width: 80px"><tr>
+<table style="width: 90px"><tr>
 <td>
 <a href="https://twitter.com/share"><img height="25px" src="twitter.svg" onerror="this.onerror=null; this.src='image.png'"></a>
 </td><td>
@@ -284,7 +284,7 @@ var arcs_back = d3.select("svg").selectAll("arc_back")
 .data(data)
 .enter().append("path")
 .attr("d",arc_back)
-.attr("fill", "#707070")//909090//3E3E3E
+.attr("fill", "#999999")//909090//3E3E3E
 .attr("transform", function(d) {var tmpX=d.X+corrX; var tmpY=d.Y+corrY; return "translate(" + tmpX + "," + tmpY + ")"; });
 
 
